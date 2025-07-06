@@ -8,28 +8,26 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
-import {
-   AlertDialog,
-   AlertDialogAction,
-   AlertDialogCancel,
-   AlertDialogContent,
-   AlertDialogDescription,
-   AlertDialogFooter,
-   AlertDialogHeader,
-   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import type { IBook } from "@/types";
 import { Check, Edit, HandIcon, Trash2, X } from "lucide-react";
 import { useState } from "react";
+import DeleteModal from "@/components/modules/books/DeleteModal";
 
 const Books = () => {
+   // states for deleting a book === start ===
    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
    const [deleteId, setDeleteId] = useState<string | null>(null);
+   // states for deleting a book === end ===
 
+   // RTK Query for getting books
    const { data, isLoading } = useGetBooksQuery(undefined);
-   const [deleteBook] = useDeleteBookMutation();
    console.log(data?.data);
 
+   // RTK Mutation for deleting a book
+   const [deleteBook] = useDeleteBookMutation();
+
+   // Final delete book function === start ===
    const handleDeleteBook = async () => {
       console.log({ deleteId });
 
@@ -46,6 +44,8 @@ const Books = () => {
          console.log(error);
       }
    };
+   // Final delete book function === end ===
+
    return (
       <section>
          <h3>All Books List</h3>
@@ -102,22 +102,13 @@ const Books = () => {
             </TableBody>
          </Table>
 
-         <AlertDialog open={openDeleteModal} onOpenChange={setOpenDeleteModal}>
-            <AlertDialogContent>
-               <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                     This will delete the book from the server.
-                  </AlertDialogDescription>
-               </AlertDialogHeader>
-               <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteBook}>
-                     Continue
-                  </AlertDialogAction>
-               </AlertDialogFooter>
-            </AlertDialogContent>
-         </AlertDialog>
+         {/* Modal for confirming a book deletion == start*/}
+         <DeleteModal
+            handleDeleteBook={handleDeleteBook}
+            openDeleteModal={openDeleteModal}
+            setOpenDeleteModal={setOpenDeleteModal}
+         />
+         {/* Modal for confirming a book deletion == end*/}
       </section>
    );
 };
