@@ -19,18 +19,14 @@ export const baseApi = createApi({
       //      }),
       //      invalidatesTags: ["task"],
       //   }),
-      //   deleteTask: builder.mutation({
-      //      query: (taskId) => ({
-      //         url: `/tasks/${taskId}`,
-      //         method: "DELETE",
-      //      }),
-      //      invalidatesTags: ["task"],
-      //   }),
+      deleteBook: builder.mutation({
+         query: (taskId) => ({
+            url: `/books/${taskId}`,
+            method: "DELETE",
+         }),
+         invalidatesTags: ["book"],
+      }),
    }),
 });
 
-export const {
-   useGetBooksQuery,
-   //    useCreateTaskMutation,
-   //    useDeleteTaskMutation,
-} = baseApi;
+export const { useGetBooksQuery, useDeleteBookMutation } = baseApi;
