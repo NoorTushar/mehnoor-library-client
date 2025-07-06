@@ -7,7 +7,7 @@ export const baseApi = createApi({
    }),
    tagTypes: ["book"],
    endpoints: (builder) => ({
-      getTasks: builder.query({
+      getBooks: builder.query({
          query: () => "/books",
          providesTags: ["book"],
       }),
@@ -29,8 +29,8 @@ export const baseApi = createApi({
    }),
 });
 
-// export const {
-//    useGetTasksQuery,
-//    useCreateTaskMutation,
-//    useDeleteTaskMutation,
-// } = baseApi;
+export const {
+   useGetBooksQuery,
+   //    useCreateTaskMutation,
+   //    useDeleteTaskMutation,
+} = baseApi;
