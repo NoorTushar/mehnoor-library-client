@@ -29,8 +29,6 @@ const Books = () => {
 
    // Final delete book function === start ===
    const handleDeleteBook = async () => {
-      console.log({ deleteId });
-
       if (!deleteId) {
          return;
       }
