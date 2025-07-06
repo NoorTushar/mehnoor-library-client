@@ -20,8 +20,8 @@ export const baseApi = createApi({
       //      invalidatesTags: ["task"],
       //   }),
       deleteBook: builder.mutation({
-         query: (taskId) => ({
-            url: `/books/${taskId}`,
+         query: (bookId) => ({
+            url: `/books/${bookId}`,
             method: "DELETE",
          }),
          invalidatesTags: ["book"],
