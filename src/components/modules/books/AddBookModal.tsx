@@ -162,7 +162,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                               <Input
                                  {...field}
                                  value={field.value || ""}
-                                 placeholder="Enter author name"
+                                 placeholder="Enter unique ISBN"
                                  required={true}
                               />
                            </FormControl>
@@ -184,6 +184,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                                  {...field}
                                  value={field.value || ""}
                                  type="number"
+                                 placeholder="Enter quantity"
                               />
                            </FormControl>
                            <FormMessage />
