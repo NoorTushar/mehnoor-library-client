@@ -29,7 +29,6 @@ const Books = () => {
 
    // RTK Query for getting books
    const { data, isLoading } = useGetBooksQuery(undefined);
-   console.log(data?.data);
 
    // RTK Mutation for deleting a book
    const [deleteBook] = useDeleteBookMutation();

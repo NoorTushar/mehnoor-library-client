@@ -1,28 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+
 import {
    Dialog,
    DialogContent,
    DialogDescription,
    DialogFooter,
    DialogTitle,
-   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import {
    Form,
    FormControl,
-   FormDescription,
    FormField,
    FormItem,
    FormLabel,
    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-   Popover,
-   PopoverContent,
-   PopoverTrigger,
-} from "@/components/ui/popover";
+
 import {
    Select,
    SelectContent,
@@ -30,10 +25,6 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 
 interface IAddBooKModalProps {
@@ -45,6 +36,17 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
    const form = useForm();
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+      data.copies = Number(data.copies);
+      if (data.available) {
+         if (data.available === "yes") {
+            data.available = true;
+         } else if (data.available === "no") {
+            data.available = false;
+         }
+      } else {
+         data.available = true;
+      }
+
       console.log(data);
    };
 
@@ -54,12 +56,15 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
             <Button variant="default">Add Task</Button>
          </DialogTrigger> */}
          <DialogContent className="sm:max-w-[425px]">
-            <DialogDescription className="sr-only">
-               Fill up this form to add task.
+            <DialogDescription>
+               Fill up this form to add a book.
             </DialogDescription>
             <DialogTitle className="sr-only"></DialogTitle>
             <Form {...form}>
-               <form onSubmit={form.handleSubmit(onSubmit)}>
+               <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+               >
                   {/* title field */}
                   <FormField
                      control={form.control}
@@ -68,52 +73,144 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                         <FormItem>
                            <FormLabel>Title</FormLabel>
                            <FormControl>
-                              <Input {...field} value={field.value || ""} />
+                              <Input
+                                 {...field}
+                                 value={field.value || ""}
+                                 placeholder="Enter book title"
+                                 required={true}
+                              />
                            </FormControl>
-                           <FormDescription>Enter task title.</FormDescription>
+                           {/* <FormDescription>Enter book title.</FormDescription> */}
                            <FormMessage />
                         </FormItem>
                      )}
                   />
 
-                  {/* description field */}
+                  {/* author field */}
                   <FormField
                      control={form.control}
-                     name="description"
+                     name="author"
                      render={({ field }) => (
                         <FormItem>
-                           <FormLabel>Description</FormLabel>
+                           <FormLabel>Author Name</FormLabel>
                            <FormControl>
-                              <Textarea {...field} value={field.value || ""} />
+                              <Input
+                                 {...field}
+                                 value={field.value || ""}
+                                 placeholder="Enter author name"
+                                 required={true}
+                              />
                            </FormControl>
-                           <FormDescription>
-                              Enter task description.
-                           </FormDescription>
+                           {/* <FormDescription>Enter book title.</FormDescription> */}
                            <FormMessage />
                         </FormItem>
                      )}
                   />
 
-                  {/* Select priority */}
+                  {/* Select genre */}
                   <FormField
                      control={form.control}
-                     name="priority"
+                     name="genre"
                      render={({ field }) => (
                         <FormItem>
-                           <FormLabel>Priority</FormLabel>
+                           <FormLabel>Genre</FormLabel>
+                           <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              required={true}
+                           >
+                              <FormControl>
+                                 <SelectTrigger>
+                                    <SelectValue placeholder="Select book genre" />
+                                 </SelectTrigger>
+                              </FormControl>
+
+                              <SelectContent>
+                                 <SelectItem value="FICTION">
+                                    Fiction
+                                 </SelectItem>
+                                 <SelectItem value="NON_FICTION">
+                                    Non Fiction
+                                 </SelectItem>
+                                 <SelectItem value="SCIENCE">
+                                    Science
+                                 </SelectItem>
+                                 <SelectItem value="HISTORY">
+                                    History
+                                 </SelectItem>
+                                 <SelectItem value="BIOGRAPHY">
+                                    Biography
+                                 </SelectItem>
+                                 <SelectItem value="FANTASY">
+                                    Fantasy
+                                 </SelectItem>
+                              </SelectContent>
+                           </Select>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+
+                  {/* isbn field */}
+                  <FormField
+                     control={form.control}
+                     name="isbn"
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>ISBN</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 value={field.value || ""}
+                                 placeholder="Enter author name"
+                                 required={true}
+                              />
+                           </FormControl>
+                           {/* <FormDescription>Enter book title.</FormDescription> */}
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+
+                  {/* copies field */}
+                  <FormField
+                     control={form.control}
+                     name="copies"
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Copies</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 value={field.value || ""}
+                                 type="number"
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+
+                  {/* Select availability */}
+                  <FormField
+                     control={form.control}
+                     name="available"
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Available?</FormLabel>
                            <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
                            >
                               <FormControl>
                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select task priority" />
+                                    <SelectValue placeholder="Is the book available?" />
                                  </SelectTrigger>
                               </FormControl>
+
                               <SelectContent>
-                                 <SelectItem value="High">High</SelectItem>
-                                 <SelectItem value="Medium">Medium</SelectItem>
-                                 <SelectItem value="Low">Low</SelectItem>
+                                 <SelectItem value={"yes"}>Yes</SelectItem>
+                                 <SelectItem value={"no"}>No</SelectItem>
                               </SelectContent>
                            </Select>
                            <FormMessage />
@@ -122,7 +219,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                   />
 
                   {/* Date Picker */}
-                  <FormField
+                  {/* <FormField
                      control={form.control}
                      name="dueDate"
                      render={({ field }) => (
@@ -170,7 +267,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                            <FormMessage />
                         </FormItem>
                      )}
-                  />
+                  /> */}
 
                   <DialogFooter>
                      <Button type="submit">Submit</Button>
