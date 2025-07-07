@@ -25,7 +25,9 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select";
+import { useAddBookMutation } from "@/redux/api/baseApi";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface IAddBooKModalProps {
    open: boolean;
@@ -34,6 +36,7 @@ interface IAddBooKModalProps {
 
 const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
    const form = useForm();
+   const [addBook] = useAddBookMutation();
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       data.copies = Number(data.copies);
@@ -48,6 +51,20 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
       }
 
       console.log(data);
+
+      try {
+         await addBook(data);
+         toast.success("Book added successfully!");
+
+         setOpen(false);
+         form.reset();
+      } catch (error) {
+         if (error instanceof Error) {
+            toast.error(error.message);
+         } else {
+            toast.error("Book could not be added");
+         }
+      }
    };
 
    return (
@@ -184,6 +201,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                                  {...field}
                                  value={field.value || ""}
                                  type="number"
+                                 required={true}
                                  placeholder="Enter quantity"
                               />
                            </FormControl>
@@ -202,6 +220,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                            <Select
                               onValueChange={field.onChange}
                               defaultValue={field.value}
+                              required={true}
                            >
                               <FormControl>
                                  <SelectTrigger>
