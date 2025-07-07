@@ -40,6 +40,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       data.copies = Number(data.copies);
+
       if (data.available) {
          if (data.available === "yes") {
             data.available = true;
@@ -50,19 +51,20 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
          data.available = true;
       }
 
-      console.log(data);
-
       try {
-         await addBook(data);
+         await addBook(data).unwrap();
          toast.success("Book added successfully!");
 
          setOpen(false);
          form.reset();
-      } catch (error) {
+         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+         console.log(error.data.message);
+
          if (error instanceof Error) {
             toast.error(error.message);
          } else {
-            toast.error("Book could not be added");
+            toast.error(error.data.message);
          }
       }
    };
@@ -72,6 +74,7 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
          {/* <DialogTrigger asChild>
             <Button variant="default">Add Task</Button>
          </DialogTrigger> */}
+
          <DialogContent className="sm:max-w-[425px]">
             <DialogDescription>
                Fill up this form to add a book.

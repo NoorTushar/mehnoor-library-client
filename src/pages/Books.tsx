@@ -16,6 +16,7 @@ import DeleteModal from "@/components/modules/books/DeleteModal";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import AddBooKModal from "@/components/modules/books/AddBookModal";
+import EditBookModal from "@/components/modules/books/EditBookModal";
 
 const Books = () => {
    // states for deleting a book === start ===
@@ -25,7 +26,12 @@ const Books = () => {
 
    // states for adding a book === start ===
    const [openAddBookModal, setOpenAddBookModal] = useState(false);
+   const [editId, setEditId] = useState<string | null>(null);
    // states for adding a book === end ===
+
+   // states for editing a book === start ===
+   const [openEditBookModal, setOpenEditBookModal] = useState(false);
+   // states for editing a book === end ===
 
    // RTK Query for getting books
    const { data, isLoading } = useGetBooksQuery(undefined);
@@ -44,11 +50,14 @@ const Books = () => {
          toast.success("Book deleted successfully!");
          setDeleteId(null);
          setOpenDeleteModal(false);
-      } catch (error) {
+         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+         console.log(error.data.message);
+
          if (error instanceof Error) {
             toast.error(error.message);
          } else {
-            toast.error("Book could not be deleted");
+            toast.error(error.data.message);
          }
       }
    };
@@ -82,7 +91,7 @@ const Books = () => {
                <TableBody>
                   {!isLoading &&
                      data.data.map((book: IBook, index: number) => (
-                        <TableRow className="*:border">
+                        <TableRow className="*:border" key={book._id}>
                            <TableCell className="font-medium text-center">
                               {index + 1}
                            </TableCell>
@@ -100,7 +109,13 @@ const Books = () => {
                            </TableCell>
                            <TableCell className="text-right min-w-[100px]">
                               <div className="flex gap-2 items-center">
-                                 <Edit className="text-primary  mx-auto cursor-pointer size-5" />
+                                 <Edit
+                                    onClick={() => {
+                                       setEditId(book._id);
+                                       setOpenEditBookModal(true);
+                                    }}
+                                    className="text-primary  mx-auto cursor-pointer size-5"
+                                 />
                                  <Trash2
                                     onClick={() => {
                                        setOpenDeleteModal(true);
@@ -118,16 +133,32 @@ const Books = () => {
          </div>
 
          {/* Modal for confirming a book deletion == start*/}
-         <DeleteModal
-            handleDeleteBook={handleDeleteBook}
-            openDeleteModal={openDeleteModal}
-            setOpenDeleteModal={setOpenDeleteModal}
-         />
+         {openDeleteModal && (
+            <DeleteModal
+               handleDeleteBook={handleDeleteBook}
+               openDeleteModal={openDeleteModal}
+               setOpenDeleteModal={setOpenDeleteModal}
+            />
+         )}
          {/* Modal for confirming a book deletion == end*/}
 
          {/* Modal for adding a book == start*/}
-         <AddBooKModal open={openAddBookModal} setOpen={setOpenAddBookModal} />
+         {openAddBookModal && (
+            <AddBooKModal
+               open={openAddBookModal}
+               setOpen={setOpenAddBookModal}
+            />
+         )}
          {/* Modal for adding a book == end*/}
+
+         {openEditBookModal && editId && (
+            <EditBookModal
+               open={openEditBookModal}
+               setOpen={setOpenEditBookModal}
+               id={editId}
+               setEditId={setEditId}
+            />
+         )}
       </section>
    );
 };
