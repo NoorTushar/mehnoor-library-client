@@ -13,6 +13,7 @@ import type { IBook } from "@/types";
 import { Check, Edit, HandIcon, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import DeleteModal from "@/components/modules/books/DeleteModal";
+import { toast } from "react-toastify";
 
 const Books = () => {
    // states for deleting a book === start ===
@@ -35,11 +36,15 @@ const Books = () => {
 
       try {
          await deleteBook(deleteId);
-
+         toast.success("Book deleted successfully!");
          setDeleteId(null);
          setOpenDeleteModal(false);
       } catch (error) {
-         console.log(error);
+         if (error instanceof Error) {
+            toast.error(error.message);
+         } else {
+            toast.error("Book could not be deleted");
+         }
       }
    };
    // Final delete book function === end ===

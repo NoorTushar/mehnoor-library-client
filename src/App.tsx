@@ -3,6 +3,7 @@ function App() {
    return (
       <>
          <header>Click me</header>
+
          <Outlet />
          <footer></footer>
       </>
