@@ -17,7 +17,7 @@ import {
    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import { ImSpinner9 } from "react-icons/im";
 import {
    Select,
    SelectContent,
@@ -36,7 +36,7 @@ interface IAddBooKModalProps {
 
 const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
    const form = useForm();
-   const [addBook] = useAddBookMutation();
+   const [addBook, { isLoading }] = useAddBookMutation();
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       data.copies = Number(data.copies);
@@ -293,7 +293,17 @@ const AddBooKModal = ({ open, setOpen }: IAddBooKModalProps) => {
                   /> */}
 
                   <DialogFooter>
-                     <Button type="submit">Submit</Button>
+                     <Button
+                        className="w-[100px]"
+                        disabled={isLoading}
+                        type="submit"
+                     >
+                        {isLoading ? (
+                           <ImSpinner9 className="animate-spin" />
+                        ) : (
+                           "Submit"
+                        )}
+                     </Button>
                   </DialogFooter>
                </form>
             </Form>

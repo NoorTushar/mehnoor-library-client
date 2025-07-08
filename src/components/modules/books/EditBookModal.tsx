@@ -28,6 +28,7 @@ import {
 import { useEditBookMutation, useGetBookByIdQuery } from "@/redux/api/baseApi";
 import { useEffect } from "react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { ImSpinner9 } from "react-icons/im";
 import { toast } from "react-toastify";
 
 interface IEditBookModalProps {
@@ -46,7 +47,7 @@ const EditBookModal = ({
    const form = useForm();
    const { data: book, isLoading } = useGetBookByIdQuery(id, { skip: !id });
 
-   const [editBook] = useEditBookMutation();
+   const [editBook, { isLoading: editBookLoading }] = useEditBookMutation();
 
    useEffect(() => {
       if (book) {
@@ -319,7 +320,17 @@ const EditBookModal = ({
                   /> */}
 
                      <DialogFooter>
-                        <Button type="submit">Submit</Button>
+                        <Button
+                           className="w-[100px] cursor-pointer"
+                           disabled={editBookLoading}
+                           type="submit"
+                        >
+                           {editBookLoading ? (
+                              <ImSpinner9 className="animate-spin" />
+                           ) : (
+                              "Submit"
+                           )}
+                        </Button>
                      </DialogFooter>
                   </form>
                </Form>

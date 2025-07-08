@@ -15,7 +15,6 @@ import { useState } from "react";
 import DeleteModal from "@/components/modules/books/DeleteModal";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
-import AddBooKModal from "@/components/modules/books/AddBookModal";
 import EditBookModal from "@/components/modules/books/EditBookModal";
 import BorrowBookModal from "@/components/modules/borrow/BorrowBookModal";
 
@@ -25,13 +24,9 @@ const Books = () => {
    const [deleteId, setDeleteId] = useState<string | null>(null);
    // states for deleting a book === end ===
 
-   // states for adding a book === start ===
-   const [openAddBookModal, setOpenAddBookModal] = useState(false);
-   const [editId, setEditId] = useState<string | null>(null);
-   // states for adding a book === end ===
-
    // states for editing a book === start ===
    const [openEditBookModal, setOpenEditBookModal] = useState(false);
+   const [editId, setEditId] = useState<string | null>(null);
    // states for editing a book === end ===
 
    // states for borrowing a book === start ===
@@ -71,16 +66,14 @@ const Books = () => {
    // Final delete book function === end ===
 
    return (
-      <section className="max-w-[1200px] mx-auto px-6">
-         <h3 className="text-primary uppercase text-3xl mb-4 tracking-wider">
+      <section className="max-w-[1200px] mx-auto px-6 min-h-[calc(100vh-68px)] pt-6">
+         <h3 className="text-primary uppercase text-2xl mb-4 tracking-wider">
             Books List
          </h3>
 
          {/* Table */}
          <div className="max-w-6xl mx-auto">
-            <Button className="mb-4" onClick={() => setOpenAddBookModal(true)}>
-               Add Book
-            </Button>
+            <Button className="mb-4">Add Book</Button>
             <Table className="">
                <TableCaption>A list of all books.</TableCaption>
                <TableHeader>
@@ -157,15 +150,6 @@ const Books = () => {
             />
          )}
          {/* Modal for confirming a book deletion == end*/}
-
-         {/* Modal for adding a book == start*/}
-         {openAddBookModal && (
-            <AddBooKModal
-               open={openAddBookModal}
-               setOpen={setOpenAddBookModal}
-            />
-         )}
-         {/* Modal for adding a book == end*/}
 
          {openEditBookModal && editId && (
             <EditBookModal

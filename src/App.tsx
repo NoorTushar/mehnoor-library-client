@@ -1,11 +1,10 @@
 import { Outlet } from "react-router";
-import { ModeToggle } from "./components/ModeToggle";
+import Navbar from "./components/Navbar";
 function App() {
    return (
       <>
          <header>
-            Click me
-            <ModeToggle />
+            <Navbar />
          </header>
 
          <Outlet />

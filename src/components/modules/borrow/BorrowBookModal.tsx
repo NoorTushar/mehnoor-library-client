@@ -25,9 +25,11 @@ import {
 } from "@/components/ui/popover";
 
 import { cn } from "@/lib/utils";
+import { useAddBorrowBookMutation } from "@/redux/api/baseApi";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { ImSpinner9 } from "react-icons/im";
 import { toast } from "react-toastify";
 
 interface IBorrowBookModalProps {
@@ -44,11 +46,18 @@ const BorrowBookModal = ({
    setBookId,
 }: IBorrowBookModalProps) => {
    const form = useForm();
-
+   const [addBorrowBook, { isLoading }] = useAddBorrowBookMutation();
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-      console.log(data);
-
+      const borrowData = {
+         ...data,
+         book: bookId,
+      };
       try {
+         const res = await addBorrowBook(borrowData).unwrap();
+         toast.success(res.message);
+         form.reset();
+         setBookId(null);
+         setOpen(false);
          // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
          console.log(error.data.message);
@@ -149,7 +158,17 @@ const BorrowBookModal = ({
                   />
 
                   <DialogFooter>
-                     <Button type="submit">Submit</Button>
+                     <Button
+                        className="w-[100px] cursor-pointer"
+                        disabled={isLoading}
+                        type="submit"
+                     >
+                        {isLoading ? (
+                           <ImSpinner9 className="animate-spin" />
+                        ) : (
+                           "Submit"
+                        )}
+                     </Button>
                   </DialogFooter>
                </form>
             </Form>

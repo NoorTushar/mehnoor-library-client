@@ -5,7 +5,7 @@ export const baseApi = createApi({
    baseQuery: fetchBaseQuery({
       baseUrl: "https://mehnoorlibrary.vercel.app/api",
    }),
-   tagTypes: ["book"],
+   tagTypes: ["book", "borrow"],
    endpoints: (builder) => ({
       getBooks: builder.query({
          query: () => "/books",
@@ -39,6 +39,15 @@ export const baseApi = createApi({
          }),
          invalidatesTags: ["book"],
       }),
+
+      addBorrowBook: builder.mutation({
+         query: (borrowData) => ({
+            url: "/borrow",
+            method: "POST",
+            body: borrowData,
+         }),
+         invalidatesTags: ["book", "borrow"],
+      }),
    }),
 });
 
@@ -48,4 +57,5 @@ export const {
    useAddBookMutation,
    useGetBookByIdQuery,
    useEditBookMutation,
+   useAddBorrowBookMutation,
 } = baseApi;
