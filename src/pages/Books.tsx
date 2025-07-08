@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/table";
 
 import type { IBook } from "@/types";
-import { Check, Edit, HandIcon, Trash2, X } from "lucide-react";
+import { Check, Edit, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import DeleteModal from "@/components/modules/books/DeleteModal";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import AddBooKModal from "@/components/modules/books/AddBookModal";
 import EditBookModal from "@/components/modules/books/EditBookModal";
+import BorrowBookModal from "@/components/modules/borrow/BorrowBookModal";
 
 const Books = () => {
    // states for deleting a book === start ===
@@ -32,6 +33,12 @@ const Books = () => {
    // states for editing a book === start ===
    const [openEditBookModal, setOpenEditBookModal] = useState(false);
    // states for editing a book === end ===
+
+   // states for borrowing a book === start ===
+   const [borrowBookId, setBorrowBookId] = useState<string | null>(null);
+   const [openBorrowBookModal, setOpenBorrowBookModal] =
+      useState<boolean>(false);
+   // states for borrowing a book === end ===
 
    // RTK Query for getting books
    const { data, isLoading } = useGetBooksQuery(undefined);
@@ -123,7 +130,16 @@ const Books = () => {
                                     }}
                                     className="text-red-500  mx-auto cursor-pointer size-5"
                                  />
-                                 <HandIcon className="text-primary  mx-auto cursor-pointer size-5" />
+                                 <Button
+                                    onClick={() => {
+                                       setOpenBorrowBookModal(true);
+                                       setBorrowBookId(book._id);
+                                    }}
+                                    className="cursor-pointer my-1"
+                                    disabled={!book.available}
+                                 >
+                                    Borrow Book
+                                 </Button>
                               </div>
                            </TableCell>
                         </TableRow>
@@ -157,6 +173,15 @@ const Books = () => {
                setOpen={setOpenEditBookModal}
                id={editId}
                setEditId={setEditId}
+            />
+         )}
+
+         {openBorrowBookModal && borrowBookId && (
+            <BorrowBookModal
+               bookId={borrowBookId}
+               open={openBorrowBookModal}
+               setBookId={setBorrowBookId}
+               setOpen={setOpenBorrowBookModal}
             />
          )}
       </section>
