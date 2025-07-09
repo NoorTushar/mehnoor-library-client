@@ -8,6 +8,7 @@ import {
    TableRow,
 } from "@/components/ui/table";
 import { useGetBorrowBookQuery } from "@/redux/api/baseApi";
+import type { IBorrow } from "@/types";
 
 const BorrowSummary = () => {
    const { data: borrowList, isLoading } = useGetBorrowBookQuery(undefined);
@@ -31,7 +32,7 @@ const BorrowSummary = () => {
                </TableHeader>
                <TableBody>
                   {!isLoading &&
-                     borrowList.data.map((borrow, index: number) => (
+                     borrowList.data.map((borrow: IBorrow, index: number) => (
                         <TableRow className="*:border" key={borrow._id}>
                            <TableCell className="font-medium text-center">
                               {index + 1}

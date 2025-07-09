@@ -16,7 +16,10 @@ export interface IBook {
 }
 
 export interface IBorrow {
-   book: string;
-   quantity: number;
-   dueDate: Date;
+   _id: string;
+   book: {
+      title: string;
+      isbn: string;
+   };
+   totalQuantity: number;
 }
