@@ -73,7 +73,6 @@ const Books = () => {
 
          {/* Table */}
          <div className="max-w-6xl mx-auto">
-            <Button className="mb-4">Add Book</Button>
             <Table className="">
                <TableCaption>A list of all books.</TableCaption>
                <TableHeader>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 const Home = () => {
    return (
@@ -9,7 +10,9 @@ const Home = () => {
          <h2 className="text-4xl uppercase tracking-widest text-center">
             MEHNOOR LIBRARY
          </h2>
-         <Button className="">View Books</Button>
+         <Button className="">
+            <Link to={"/books"}>View Books</Link>
+         </Button>
       </section>
    );
 };
